@@ -5,13 +5,14 @@ import { BookEntity } from './entities/book.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from './configs/configuration';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot({
-    //   load: [configuration],
-    //   isGlobal: true,
-    // }),
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
     AuthModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -35,15 +36,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             }
           : {}),
         logging: true,
-        cache: {
-          duration: 1000 * 60 * 60 * 6,
-          type: 'ioredis',
-          options: {
-            host: configService.get<string>('REDIS.HOST'),
-            port: configService.get<number>('REDIS.PORT'),
-            password: configService.get<string>('REDIS.PASSWORD'),
-          },
-        },
         connectTimeoutMS: 60000,
         maxQueryExecutionTime: 1000 * 60 * 60,
         extra: {
