@@ -19,6 +19,6 @@ export abstract class BaseEntity {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @Column()
-  is_deleted: boolean;
+  // @Column()
+  // is_deleted: boolean;
 }

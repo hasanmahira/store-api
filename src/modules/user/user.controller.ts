@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { UserEntity } from 'src/entities/user.entity';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { UserItemDto } from './dto/user.item.dto';
+import { UserCreateDto } from './dto/user.create.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -30,8 +31,17 @@ export class UserController {
   }
 
   @Post()
-  create(@Body() user: UserEntity): Promise<UserEntity> {
-    return this.userService.create(user);
+  @ApiExtraModels(UserItemDto)
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    schema: {
+      $ref: getSchemaPath(UserItemDto),
+    },
+  })
+  // @Roles(Role.WRITE)
+  // @UseGuards(AuthGuard('basic'), RolesGuard)
+  async create(@Body() createUserDto: UserCreateDto): Promise<UserItemDto> {
+    return this.userService.create(createUserDto);
   }
 
   @Put(':id')
