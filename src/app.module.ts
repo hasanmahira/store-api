@@ -10,7 +10,6 @@ import { PermissionEntity } from './entities/permission.entity';
 import { UserEntity } from './entities/user.entity';
 import { RoleEntity } from './entities/role.entity';
 import { BookStoreEntity } from './entities/bookStore.entity';
-import { AuthSchema } from './entities/auth.schema';
 
 @Module({
   imports: [
@@ -28,7 +27,6 @@ import { AuthSchema } from './entities/auth.schema';
         username: configService.get<string>('POSTGRES.USERNAME'),
         password: configService.get<string>('POSTGRES.PASSWORD'),
         database: configService.get<string>('POSTGRES.DB'),
-        schemas: [AuthSchema, 'book'],
         entities: [UserEntity, RoleEntity, PermissionEntity, BookEntity, BookStoreEntity],
         synchronize: configService.get<boolean>('POSTGRES.SYNCHRONIZE'),
         ssl: configService.get<boolean>('POSTGRES.SSL'),
