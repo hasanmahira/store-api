@@ -4,8 +4,8 @@ import { UserEntity } from 'src/entities/user.entity';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { UserItemDto } from './dto/user.item.dto';
 
-@Controller('users')
 @ApiTags('users')
+@Controller('users')
 // @ApiSecurity('basic')
 export class UserController {
   constructor(private readonly userService: UserService) {}

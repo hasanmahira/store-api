@@ -36,7 +36,7 @@ function parseWhereObj(obj) {
   if (Array.isArray(obj)) {
     return obj?.map((o) => parseWhereObj(o));
   } else if (typeof obj === 'object') {
-    let newObj = {};
+    const newObj = {};
     for (const [key, value] of Object.entries(obj)) {
       newObj[key] = parseWhereObj(obj[key]);
     }

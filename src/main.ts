@@ -6,11 +6,11 @@ import configuration from './configs/configuration';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { UnhandledExceptions } from './unhandledExceptions';
 import { QueryErrorFilter } from './queryErrorFilter';
+import { UserModule } from './modules/user/user.module';
 import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 import { BookModule } from './modules/book/book.module';
 import { BookStoreModule } from './modules/bookStore/bookStore.module';
-import { UserModule } from './modules/user/user.module';
-import { PermissionModule } from './modules/permission/permission.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,26 +32,21 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new QueryErrorFilter(), new UnhandledExceptions());
-  debugger;
-  SwaggerModule.setup(
-    'api',
-    app,
-    SwaggerModule.createDocument(
-      app,
-      new DocumentBuilder()
-        .addSecurity('basic', {
-          type: 'http',
-          scheme: 'basic',
-        })
-        .setTitle('Book Store API')
-        .setDescription('Book Store API')
-        .setVersion('1.0')
-        .build(),
-      {
-        include: [UserModule, RoleModule, PermissionModule, BookModule, BookStoreModule],
-      },
-    ),
-  );
+
+  const options = new DocumentBuilder()
+    .setTitle('Book Store API')
+    .setDescription('Book Store API')
+    .setVersion('1.0')
+    .addTag('users')
+    .addBearerAuth()
+    .build();
+
+  const include = {
+    include: [UserModule, RoleModule, PermissionModule, BookModule, BookStoreModule],
+  };
+
+  const document = SwaggerModule.createDocument(app, options, include);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(configuration().port);
 }
