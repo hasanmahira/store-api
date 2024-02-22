@@ -1,7 +1,3 @@
-// export const MOVIE_TABLE_NAME = 'movie';
-// export const SCREEN_TABLE_NAME = 'screen';
-// export const SEAT_TABLE_NAME = 'seat';
-// export const SHOWTIME_TABLE_NAME = 'showtime';
 export const USER_TABLE_NAME = 'user';
 export const ROLE_TABLE_NAME = 'role';
 export const PERMISSION_TABLE_NAME = 'permission';

@@ -1,6 +1,7 @@
-import { Entity, Column, Unique, Index } from 'typeorm';
+import { Entity, Column, Unique, Index, JoinTable, ManyToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BOOK_TABLE_NAME } from '../constants/tableNames';
+import { BookStoreEntity } from './bookStore.entity';
 
 @Entity({ name: BOOK_TABLE_NAME, orderBy: { id: 'ASC' } })
 @Unique(['id'])
@@ -24,7 +25,7 @@ export class BookEntity extends BaseEntity {
   @Column({ nullable: true })
   city: string;
 
-  //   //OneToMany
-  //   @OneToMany(() => CinemaEntity, (cinemaEntity) => cinemaEntity.chain)
-  //   cinemas: CinemaEntity[];
+  @ManyToMany(() => BookStoreEntity)
+  @JoinTable()
+  stores: BookStoreEntity[];
 }

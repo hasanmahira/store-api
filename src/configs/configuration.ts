@@ -11,6 +11,7 @@ export interface IAppConfig {
     DB: string;
     SSL: boolean;
     SYNCHRONIZE: boolean;
+    SCHEMA: string[];
   };
   port: number;
   requestHandlerURL: string;
@@ -26,6 +27,7 @@ export default (): IAppConfig => ({
     DB: process.env.POSTGRES_DB,
     SSL: process.env.POSTGRES_SSL === 'true',
     SYNCHRONIZE: process.env.POSTGRES_SYNCHRONIZE === 'true',
+    SCHEMA: ['auth', 'book'],
   },
   port: parseInt(process.env.PORT) || 3030,
 });

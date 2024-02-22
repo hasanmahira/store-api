@@ -1,4 +1,3 @@
-// role.entity.ts
 import { Entity, Column, Unique } from 'typeorm';
 import { PERMISSION_TABLE_NAME } from '../constants/tableNames';
 import { BaseEntity } from './base.entity';
@@ -8,6 +7,4 @@ import { BaseEntity } from './base.entity';
 export class PermissionEntity extends BaseEntity {
   @Column({ nullable: false })
   name: string;
-
-  // Add any other properties as needed
 }
