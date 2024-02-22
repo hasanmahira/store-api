@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+DOCKER_REGISTRY_HOST_PREFIX="registry.digitalocean.com/odp"
+
+VERSION=$(node -e "console.log(require('./package.json').version)")
+
+NAME=$(node -e "console.log(require('./package.json').name.split('/').pop())")
+
+echo "tag: $NAME:$VERSION"
+
+docker tag "$NAME:$VERSION" "$DOCKER_REGISTRY_HOST_PREFIX/$NAME:$VERSION"
+
+docker push "$DOCKER_REGISTRY_HOST_PREFIX/$NAME:$VERSION"

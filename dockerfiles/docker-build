@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+VERSION=$(node -e "console.log(require('./package.json').version)")
+
+NAME=$(node -e "console.log(require('./package.json').name.split('/').pop())")
+
+echo "tag: $NAME:$VERSION"
+
+docker build . -f dockerfiles/prod.Dockerfile -t "$NAME:$VERSION" -t "$NAME:latest" "$@" --no-cache
