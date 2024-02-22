@@ -48,6 +48,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options, include);
   SwaggerModule.setup('api', app, document);
 
+  // Seed data
+  // const seedService = app.get(SeedModule);
+  // await seedService.seedAdminUser();
+
   await app.listen(configuration().port);
 }
 bootstrap();
