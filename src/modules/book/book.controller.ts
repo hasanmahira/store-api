@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { BookService } from './book.service';
 import { BookEntity } from 'src/entities/book.entity';
-import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { BookItemDto } from './dto/book.item.dto';
 
 @Controller('books')
@@ -10,6 +10,7 @@ import { BookItemDto } from './dto/book.item.dto';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  @ApiOperation({ summary: 'Get all books' })
   @Get()
   findAll(): Promise<BookEntity[]> {
     return this.bookService.findAll();

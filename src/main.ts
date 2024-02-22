@@ -32,7 +32,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new QueryErrorFilter(), new UnhandledExceptions());
-
+  debugger;
   SwaggerModule.setup(
     'api',
     app,
