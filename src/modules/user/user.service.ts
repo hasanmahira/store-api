@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { InsertResult, Repository } from 'typeorm';
@@ -23,7 +23,25 @@ export class UserService {
   }
 
   async create(createUserDto: UserCreateDto): Promise<UserItemDto> {
-    // return this.userRepository.save(user);
+    // Check for unique username
+    const existingUsername = await this.userRepository.findOne({
+      where: { username: createUserDto.username },
+    });
+
+    if (existingUsername) {
+      throw new ConflictException('Username is already taken');
+    }
+
+    // Check for unique email
+    const existingEmail = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingEmail) {
+      throw new ConflictException('Email is already taken');
+    }
+
+    // Proceed with insertion if both username and email are unique
     const insertResult: InsertResult = await this.userRepository.insert(createUserDto);
     const { id } = insertResult?.identifiers?.[0];
     if (!id) {
@@ -43,11 +61,19 @@ export class UserService {
   }
 
   async findOne(id: number): Promise<UserItemDto> {
-    const movie: UserEntity = await this.userRepository.findOneBy({ id });
-    if (!movie) {
+    const user: UserEntity = await this.userRepository.findOneBy({ id });
+    if (!user) {
       throw new NotFoundException(`No movie was found with the given id ${id}.`);
     }
-    return responseDtoValidator<UserItemDto>(UserItemDto, movie as any);
+    return responseDtoValidator<UserItemDto>(UserItemDto, user as any);
+  }
+
+  async findByUsername(username: string): Promise<UserItemDto> {
+    const user: UserEntity = await this.userRepository.findOneBy({ username: username });
+    if (!user) {
+      throw new NotFoundException(`No movie was found with the given id ${username}.`);
+    }
+    return responseDtoValidator<UserItemDto>(UserItemDto, user as any);
   }
 
   async update(id: number, user: UserEntity): Promise<UserEntity | undefined> {

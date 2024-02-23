@@ -7,6 +7,7 @@ export class UserBaseDto {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsString())
+  @decorate(IsUnique())
   @decorate(ApiProperty({ type: String, required: false }))
   username: string;
 
@@ -32,4 +33,7 @@ export class UserBaseDto {
   //   @decorate(ArrayUnique())
   //   @decorate(ApiProperty({ type: String, required: false }))
   //   salt: string;
+}
+function IsUnique(): any {
+  throw new Error('Function not implemented.');
 }
