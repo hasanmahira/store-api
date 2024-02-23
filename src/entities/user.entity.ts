@@ -14,11 +14,8 @@ export class UserEntity extends BaseEntity {
   @Column()
   email: string;
 
-  // @Column()
-  // salt: string;
-
-  // @Column()
-  // failed_login_count: number;
+  @Column()
+  salt: string;
 
   @ManyToMany(() => RoleEntity)
   @JoinTable()

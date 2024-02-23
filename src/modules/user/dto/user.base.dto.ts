@@ -7,29 +7,27 @@ export class UserBaseDto {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsString())
-  @decorate(ApiProperty({ type: String, required: false }))
+  @decorate(ApiProperty({ type: String, required: true }))
   username: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
-  @decorate(ApiProperty({ type: String, required: false }))
+  @decorate(ApiProperty({ type: String, required: true }))
   password: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
-  @decorate(ApiProperty({ type: String, required: false }))
+  @decorate(ApiProperty({ type: String, required: true }))
   email: string;
 
-  //   @decorate(Expose())
-  //   @decorate(IsOptional())
-  //   @decorate(ValidateIf((object, value) => !!value))
-  //   @decorate(IsArray())
-  //   @decorate(IsString({ each: true }))
-  //   @decorate(ArrayUnique())
-  //   @decorate(ApiProperty({ type: String, required: false }))
-  //   salt: string;
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsString({ each: true }))
+  @decorate(ApiProperty({ type: String, required: true }))
+  salt: string;
 }

@@ -7,6 +7,9 @@ import { UserItemDto } from './dto/user.item.dto';
 import { responseDtoValidator } from 'src/helpers/responseDtoValidator';
 import { wait } from 'src/helpers/wait';
 import { UserUpdateDto } from './dto/user.update.dto';
+import * as bcrypt from 'bcrypt';
+
+const saltRounds = 10; // Adjust according to your security requirements
 
 @Injectable()
 export class UserService {
@@ -23,10 +26,10 @@ export class UserService {
     return this.userRepository.findOneBy({ id: id });
   }
 
-  async create(createUserDto: UserCreateDto): Promise<UserItemDto> {
+  async create(user: UserCreateDto): Promise<UserItemDto> {
     // Check for unique username
     const existingUsername = await this.userRepository.findOne({
-      where: { username: createUserDto.username },
+      where: { username: user.username },
     });
 
     if (existingUsername) {
@@ -35,21 +38,35 @@ export class UserService {
 
     // Check for unique email
     const existingEmail = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
+      where: { email: user.email },
     });
 
     if (existingEmail) {
       throw new ConflictException('Email is already taken');
     }
 
+    user.salt = await bcrypt.genSalt(saltRounds);
+    user.password = await this.hashPassword(user.password, user.salt);
+
     // Proceed with insertion if both username and email are unique
-    const insertResult: InsertResult = await this.userRepository.insert(createUserDto);
+    const insertResult: InsertResult = await this.userRepository.insert(user);
     const { id } = insertResult?.identifiers?.[0];
     if (!id) {
-      throw new InternalServerErrorException(`Failed to insert data in db. ${JSON.stringify(createUserDto)}`);
+      throw new InternalServerErrorException(`Failed to insert data in db. ${JSON.stringify(user)}`);
     }
 
     return this.findOneAnyway(id);
+  }
+
+  // Function to hash a password with a unique salt
+  async hashPassword(password: string, salt: string): Promise<string> {
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  }
+
+  // Function to verify a password during login
+  async verifyPassword(enteredPassword: string, storedHashedPassword: string): Promise<boolean> {
+    return await bcrypt.compare(enteredPassword, storedHashedPassword);
   }
 
   async findOneAnyway(id: number): Promise<UserItemDto> {
