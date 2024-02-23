@@ -1,35 +1,34 @@
-import { IsNotEmpty, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { decorate } from 'ts-mixer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Decimal128 } from 'typeorm';
 
-export class UserBaseDto {
+export class BookBaseDto {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  username: string;
+  title: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  password: string;
+  author: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  email: string;
+  description: string;
 
-  //   @decorate(Expose())
-  //   @decorate(IsOptional())
-  //   @decorate(ValidateIf((object, value) => !!value))
-  //   @decorate(IsArray())
-  //   @decorate(IsString({ each: true }))
-  //   @decorate(ArrayUnique())
-  //   @decorate(ApiProperty({ type: String, required: false }))
-  //   salt: string;
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsNumber())
+  @decorate(ApiProperty({ type: Decimal128, required: false }))
+  price: number;
 }

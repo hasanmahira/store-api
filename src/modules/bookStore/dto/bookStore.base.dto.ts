@@ -3,33 +3,31 @@ import { Expose } from 'class-transformer';
 import { decorate } from 'ts-mixer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserBaseDto {
+export class BookStoreBaseDto {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  username: string;
+  name: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  password: string;
+  location: string;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsString())
   @decorate(ApiProperty({ type: String, required: false }))
-  email: string;
+  address: string;
 
-  //   @decorate(Expose())
-  //   @decorate(IsOptional())
-  //   @decorate(ValidateIf((object, value) => !!value))
-  //   @decorate(IsArray())
-  //   @decorate(IsString({ each: true }))
-  //   @decorate(ArrayUnique())
-  //   @decorate(ApiProperty({ type: String, required: false }))
-  //   salt: string;
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsString())
+  @decorate(ApiProperty({ type: String, required: false }))
+  city: string;
 }

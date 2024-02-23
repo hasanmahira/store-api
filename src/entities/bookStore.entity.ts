@@ -1,6 +1,7 @@
-import { Entity, Column, Unique, Index } from 'typeorm';
+import { Entity, Column, Unique, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BOOK_STORE_TABLE_NAME } from '../constants/tableNames';
+import { BookEntity } from './book.entity';
 
 @Entity({ name: BOOK_STORE_TABLE_NAME, orderBy: { id: 'ASC' } })
 @Unique(['id'])
@@ -9,18 +10,15 @@ export class BookStoreEntity extends BaseEntity {
   @Index()
   name: string;
 
-  @Column({ nullable: true })
-  description: string;
-
-  @Column({ nullable: true })
-  website_url: string;
-
-  @Column({ nullable: true })
-  logo_url: string;
+  @Column({ length: 200 })
+  location: string;
 
   @Column({ nullable: true })
   address: string;
 
   @Column({ nullable: true })
   city: string;
+
+  @OneToMany(() => BookEntity, (book) => book.bookstore)
+  books: BookEntity[];
 }

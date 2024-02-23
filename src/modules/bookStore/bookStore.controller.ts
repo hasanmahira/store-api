@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { BookStoreService } from './bookStore.service';
-import { BookStoreEntity } from 'src/entities/bookStore.entity';
 import { ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { BookStoreItemDto } from './dto/bookStore.item.dto';
+import { BookStoreCreateDto } from './dto/bookStore.create.dto';
+import { BookStoreUpdateDto } from './dto/bookStore.update.dto';
 
 @Controller('bookStores')
 @ApiTags('bookStores')
@@ -12,7 +13,7 @@ export class BookStoreController {
 
   @ApiOperation({ summary: 'Get all book Stores' })
   @Get()
-  findAll(): Promise<BookStoreEntity[]> {
+  findAll(): Promise<BookStoreItemDto[]> {
     return this.bookStoreService.findAll();
   }
 
@@ -26,17 +27,17 @@ export class BookStoreController {
   })
   // @BookStores(BookStore.WRITE, BookStore.READ)
   // @UseGuards(AuthGuard('basic'), BookStoresGuard)
-  findById(@Param('id') id: number): Promise<BookStoreEntity | undefined> {
+  findById(@Param('id') id: number): Promise<BookStoreItemDto | undefined> {
     return this.bookStoreService.findById(id);
   }
 
   @Post()
-  create(@Body() bookStore: BookStoreEntity): Promise<BookStoreEntity> {
+  create(@Body() bookStore: BookStoreCreateDto): Promise<BookStoreItemDto> {
     return this.bookStoreService.create(bookStore);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() bookStore: BookStoreEntity): Promise<BookStoreEntity | undefined> {
+  update(@Param('id') id: string, @Body() bookStore: BookStoreUpdateDto): Promise<BookStoreItemDto | undefined> {
     return this.bookStoreService.update(Number(id), bookStore);
   }
 

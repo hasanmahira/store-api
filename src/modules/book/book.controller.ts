@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { BookService } from './book.service';
-import { BookEntity } from 'src/entities/book.entity';
 import { ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { BookItemDto } from './dto/book.item.dto';
+import { BookUpdateDto } from './dto/book.update.dto';
+import { BookCreateDto } from './dto/book.create.dto';
 
 @Controller('books')
 @ApiTags('books')
@@ -12,7 +13,7 @@ export class BookController {
 
   @ApiOperation({ summary: 'Get all books' })
   @Get()
-  findAll(): Promise<BookEntity[]> {
+  findAll(): Promise<BookItemDto[]> {
     return this.bookService.findAll();
   }
 
@@ -26,17 +27,17 @@ export class BookController {
   })
   // @Books(Book.WRITE, Book.READ)
   // @UseGuards(AuthGuard('basic'), BooksGuard)
-  findById(@Param('id') id: number): Promise<BookEntity | undefined> {
+  findById(@Param('id') id: number): Promise<BookItemDto | undefined> {
     return this.bookService.findById(id);
   }
 
   @Post()
-  create(@Body() book: BookEntity): Promise<BookEntity> {
+  create(@Body() book: BookCreateDto): Promise<BookItemDto> {
     return this.bookService.create(book);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() book: BookEntity): Promise<BookEntity | undefined> {
+  update(@Param('id') id: string, @Body() book: BookUpdateDto): Promise<BookItemDto | undefined> {
     return this.bookService.update(Number(id), book);
   }
 

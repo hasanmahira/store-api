@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { PermissionService } from './permission.service';
-import { PermissionEntity } from 'src/entities/permission.entity';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { PermissionItemDto } from './dto/permission.item.dto';
+import { PermissionUpdateDto } from './dto/permission.update.dto';
+import { PermissionCreateDto } from './dto/permission.create.dto';
 
 @Controller('permissions')
 @ApiTags('permissions')
@@ -11,7 +12,7 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Get()
-  findAll(): Promise<PermissionEntity[]> {
+  findAll(): Promise<PermissionItemDto[]> {
     return this.permissionService.findAll();
   }
 
@@ -25,17 +26,17 @@ export class PermissionController {
   })
   // @Permissions(Permission.WRITE, Permission.READ)
   // @UseGuards(AuthGuard('basic'), PermissionsGuard)
-  findById(@Param('id') id: number): Promise<PermissionEntity | undefined> {
+  findById(@Param('id') id: number): Promise<PermissionItemDto | undefined> {
     return this.permissionService.findById(id);
   }
 
   @Post()
-  create(@Body() permission: PermissionEntity): Promise<PermissionEntity> {
+  create(@Body() permission: PermissionCreateDto): Promise<PermissionItemDto> {
     return this.permissionService.create(permission);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() permission: PermissionEntity): Promise<PermissionEntity | undefined> {
+  update(@Param('id') id: string, @Body() permission: PermissionUpdateDto): Promise<PermissionItemDto | undefined> {
     return this.permissionService.update(Number(id), permission);
   }
 

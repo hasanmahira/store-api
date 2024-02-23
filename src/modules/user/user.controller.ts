@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserEntity } from 'src/entities/user.entity';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { UserItemDto } from './dto/user.item.dto';
 import { UserCreateDto } from './dto/user.create.dto';
+import { UserUpdateDto } from './dto/user.update.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -12,7 +12,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  findAll(): Promise<UserEntity[]> {
+  findAll(): Promise<UserItemDto[]> {
     return this.userService.findAll();
   }
 
@@ -26,7 +26,7 @@ export class UserController {
   })
   // @Users(User.WRITE, User.READ)
   // @UseGuards(AuthGuard('basic'), UsersGuard)
-  findById(@Param('id') id: number): Promise<UserEntity | undefined> {
+  findById(@Param('id') id: number): Promise<UserItemDto | undefined> {
     return this.userService.findById(id);
   }
 
@@ -45,8 +45,8 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() user: UserEntity): Promise<UserEntity | undefined> {
-    return this.userService.update(Number(id), user);
+  update(@Param('id') id: string, @Body() updateUserDto: UserUpdateDto): Promise<UserItemDto | undefined> {
+    return this.userService.update(Number(id), updateUserDto);
   }
 
   @Delete(':id')

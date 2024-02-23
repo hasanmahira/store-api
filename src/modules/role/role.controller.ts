@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { RoleEntity } from 'src/entities/role.entity';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { RoleItemDto } from './dto/role.item.dto';
+import { RoleCreateDto } from './dto/role.create.dto';
+import { RoleUpdateDto } from './dto/role.update.dto';
 
 @Controller('roles')
 @ApiTags('roles')
@@ -11,7 +12,7 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Get()
-  findAll(): Promise<RoleEntity[]> {
+  findAll(): Promise<RoleItemDto[]> {
     return this.roleService.findAll();
   }
 
@@ -25,17 +26,17 @@ export class RoleController {
   })
   // @Roles(Role.WRITE, Role.READ)
   // @UseGuards(AuthGuard('basic'), RolesGuard)
-  findById(@Param('id') id: number): Promise<RoleEntity | undefined> {
+  findById(@Param('id') id: number): Promise<RoleItemDto | undefined> {
     return this.roleService.findById(id);
   }
 
   @Post()
-  create(@Body() role: RoleEntity): Promise<RoleEntity> {
+  create(@Body() role: RoleCreateDto): Promise<RoleItemDto> {
     return this.roleService.create(role);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() role: RoleEntity): Promise<RoleEntity | undefined> {
+  update(@Param('id') id: string, @Body() role: RoleUpdateDto): Promise<RoleItemDto | undefined> {
     return this.roleService.update(Number(id), role);
   }
 

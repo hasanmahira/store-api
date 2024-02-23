@@ -6,6 +6,7 @@ import { UserCreateDto } from './dto/user.create.dto';
 import { UserItemDto } from './dto/user.item.dto';
 import { responseDtoValidator } from 'src/helpers/responseDtoValidator';
 import { wait } from 'src/helpers/wait';
+import { UserUpdateDto } from './dto/user.update.dto';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<UserItemDto[]> {
     return this.userRepository.find();
   }
 
@@ -63,7 +64,7 @@ export class UserService {
   async findOne(id: number): Promise<UserItemDto> {
     const user: UserEntity = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new NotFoundException(`No movie was found with the given id ${id}.`);
+      throw new NotFoundException(`No user was found with the given id ${id}.`);
     }
     return responseDtoValidator<UserItemDto>(UserItemDto, user as any);
   }
@@ -71,12 +72,12 @@ export class UserService {
   async findByUsername(username: string): Promise<UserItemDto> {
     const user: UserEntity = await this.userRepository.findOneBy({ username: username });
     if (!user) {
-      throw new NotFoundException(`No movie was found with the given id ${username}.`);
+      throw new NotFoundException(`No user was found with the given username ${username}.`);
     }
     return responseDtoValidator<UserItemDto>(UserItemDto, user as any);
   }
 
-  async update(id: number, user: UserEntity): Promise<UserEntity | undefined> {
+  async update(id: number, user: UserUpdateDto): Promise<UserItemDto | undefined> {
     await this.userRepository.update(id, user);
     return this.userRepository.findOneBy({ id: id });
   }

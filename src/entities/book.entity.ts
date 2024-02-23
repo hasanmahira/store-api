@@ -1,4 +1,4 @@
-import { Entity, Column, Unique, Index, JoinTable, ManyToMany } from 'typeorm';
+import { Entity, Column, Unique, ManyToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BOOK_TABLE_NAME } from '../constants/tableNames';
 import { BookStoreEntity } from './bookStore.entity';
@@ -6,26 +6,18 @@ import { BookStoreEntity } from './bookStore.entity';
 @Entity({ name: BOOK_TABLE_NAME, orderBy: { id: 'ASC' } })
 @Unique(['id'])
 export class BookEntity extends BaseEntity {
-  @Column({ nullable: false })
-  @Index()
-  name: string;
+  @Column({ length: 100 })
+  title: string;
 
-  @Column({ nullable: true })
+  @Column({ length: 50 })
+  author: string;
+
+  @Column('text')
   description: string;
 
-  @Column({ nullable: true })
-  website_url: string;
+  @Column({ type: 'decimal', precision: 5, scale: 2 })
+  price: number;
 
-  @Column({ nullable: true })
-  logo_url: string;
-
-  @Column({ nullable: true })
-  address: string;
-
-  @Column({ nullable: true })
-  city: string;
-
-  @ManyToMany(() => BookStoreEntity)
-  @JoinTable()
-  stores: BookStoreEntity[];
+  @ManyToMany(() => BookStoreEntity, (bookstore) => bookstore.books)
+  bookstore: BookStoreEntity;
 }

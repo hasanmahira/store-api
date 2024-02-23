@@ -58,6 +58,7 @@ import { ConnectionMiddleware } from './middlewares/connection.middleware';
     PermissionModule,
     BookModule,
     BookStoreModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],

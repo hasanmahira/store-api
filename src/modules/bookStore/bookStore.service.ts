@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookStoreEntity } from 'src/entities/bookStore.entity';
 import { Repository } from 'typeorm';
+import { BookStoreCreateDto } from './dto/bookStore.create.dto';
+import { BookStoreUpdateDto } from './dto/bookStore.update.dto';
+import { BookStoreItemDto } from './dto/bookStore.item.dto';
 
 @Injectable()
 export class BookStoreService {
@@ -10,19 +13,19 @@ export class BookStoreService {
     private readonly bookStoreRepository: Repository<BookStoreEntity>,
   ) {}
 
-  async findAll(): Promise<BookStoreEntity[]> {
+  async findAll(): Promise<BookStoreItemDto[]> {
     return this.bookStoreRepository.find();
   }
 
-  async findById(id: number): Promise<BookStoreEntity | undefined> {
+  async findById(id: number): Promise<BookStoreItemDto | undefined> {
     return this.bookStoreRepository.findOneBy({ id: id });
   }
 
-  async create(bookStore: BookStoreEntity): Promise<BookStoreEntity> {
+  async create(bookStore: BookStoreCreateDto): Promise<BookStoreItemDto> {
     return this.bookStoreRepository.save(bookStore);
   }
 
-  async update(id: number, bookStore: BookStoreEntity): Promise<BookStoreEntity | undefined> {
+  async update(id: number, bookStore: BookStoreUpdateDto): Promise<BookStoreItemDto | undefined> {
     await this.bookStoreRepository.update(id, bookStore);
     return this.bookStoreRepository.findOneBy({ id: id });
   }

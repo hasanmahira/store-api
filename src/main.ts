@@ -11,6 +11,7 @@ import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { BookModule } from './modules/book/book.module';
 import { BookStoreModule } from './modules/bookStore/bookStore.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -42,7 +43,7 @@ async function bootstrap() {
     .build();
 
   const include = {
-    include: [UserModule, RoleModule, PermissionModule, BookModule, BookStoreModule],
+    include: [UserModule, RoleModule, PermissionModule, BookModule, BookStoreModule, AuthModule],
   };
 
   const document = SwaggerModule.createDocument(app, options, include);
