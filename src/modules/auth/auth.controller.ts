@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, SetMetadata } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthLoginDto } from './dto/auth.login.dto';
 
 const IS_PUBLIC_KEY = 'isPublic';
 const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -13,7 +14,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
+  signIn(@Body() signInDto: AuthLoginDto) {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 

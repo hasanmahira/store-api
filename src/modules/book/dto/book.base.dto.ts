@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
-import { Expose } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf, ValidateNested } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
 import { decorate } from 'ts-mixer';
 import { ApiProperty } from '@nestjs/swagger';
 import { Decimal128 } from 'typeorm';
+import { BookStoreItemDto } from 'src/modules/bookStore/dto/bookStore.item.dto';
 
 export class BookBaseDto {
   @decorate(Expose())
@@ -31,4 +32,13 @@ export class BookBaseDto {
   @decorate(IsNumber())
   @decorate(ApiProperty({ type: Decimal128, required: false }))
   price: number;
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(Type(() => BookStoreItemDto))
+  @decorate(ApiProperty({ type: [BookStoreItemDto], required: false }))
+  roles?: BookStoreItemDto[];
 }

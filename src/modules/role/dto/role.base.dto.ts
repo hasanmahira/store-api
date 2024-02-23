@@ -8,7 +8,7 @@ export class RoleBaseDto {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsString())
-  @decorate(ApiProperty({ type: String, required: false }))
+  @decorate(ApiProperty({ type: String, required: true }))
   name: string;
 
   @decorate(Expose())
@@ -17,6 +17,6 @@ export class RoleBaseDto {
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
   @decorate(Type(() => PermissionItemDto))
-  @decorate(ApiProperty({ type: [String], required: false }))
+  @decorate(ApiProperty({ type: [PermissionItemDto], required: false }))
   permissions?: PermissionItemDto[];
 }

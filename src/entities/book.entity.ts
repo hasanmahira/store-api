@@ -1,4 +1,4 @@
-import { Entity, Column, Unique, ManyToMany } from 'typeorm';
+import { Entity, Column, Unique, ManyToMany, JoinTable } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BOOK_TABLE_NAME } from '../constants/tableNames';
 import { BookStoreEntity } from './bookStore.entity';
@@ -18,6 +18,7 @@ export class BookEntity extends BaseEntity {
   @Column({ type: 'decimal', precision: 5, scale: 2 })
   price: number;
 
-  @ManyToMany(() => BookStoreEntity, (bookstore) => bookstore.books)
-  bookstore: BookStoreEntity;
+  @ManyToMany(() => BookStoreEntity)
+  @JoinTable()
+  roles: BookStoreEntity[];
 }
